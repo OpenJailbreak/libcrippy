@@ -20,7 +20,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include <errno.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -32,6 +32,7 @@
 #include "libcrippy-1.0/file.h"
 #include "libcrippy-1.0/debug.h"
 #include "libcrippy-1.0/boolean.h"
+#include "libcrippy-1.0/directory.h"
 #include "libcrippy-1.0/endianness.h"
 #include "libcrippy-1.0/architecture.h"
 
@@ -39,8 +40,7 @@
 #define BUFMEDIUM   0x400
 #define BUFLARGE    0x4000
 
-int mkdir_with_parents(const char *dir, int mode);
-char* build_path(const char* elem, ...);
+
 char* prot2str(uint32_t prot);
 
 #endif /* COMMON_H */
