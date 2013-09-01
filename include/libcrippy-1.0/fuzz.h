@@ -1,5 +1,5 @@
 /**
-  * libcrippy-1.0 - common.h
+  * libcrippy-1.0 - fuzz.h
   * Copyright (C) 2013 Crippy-Dev Team
   * Copyright (C) 2010-2013 Joshua Hill
   *
@@ -17,35 +17,13 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef FUZZ_H_
+#define FUZZ_H_
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdarg.h>
-#include <string.h>
-#include <libgen.h>
-#include <sys/stat.h>
-
-#include "libcrippy-1.0/file.h"
-#include "libcrippy-1.0/fuzz.h"
-#include "libcrippy-1.0/debug.h"
-#include "libcrippy-1.0/boolean.h"
-#include "libcrippy-1.0/directory.h"
-#include "libcrippy-1.0/endianness.h"
-#include "libcrippy-1.0/architecture.h"
-
-#define BUFSMALL    0x40
-#define BUFMEDIUM   0x400
-#define BUFLARGE    0x4000
-
-
-char* prot2str(uint32_t prot);
-void hexdump(unsigned char *data, unsigned int amount);
-
-int check_ascii_pointer(uint32_t pointer);
-int check_ascii_string(const char* string, size_t length);
-
-#endif /* COMMON_H */
+unsigned int random_int();
+unsigned char random_char();
+unsigned short random_short();
+int random_string(unsigned char* buffer, unsigned int size);
+int randomize_string(unsigned char* buffer, int size, float amount);
+#endif /* FUZZ_H_ */

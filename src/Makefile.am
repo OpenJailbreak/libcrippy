@@ -8,4 +8,5 @@ libcrippy_1_0_la_SOURCES = \
 						libcrippy.c \
 						file.c \
 						directory.c \
-						architecture.c
+						architecture.c \
+						fuzz.c
