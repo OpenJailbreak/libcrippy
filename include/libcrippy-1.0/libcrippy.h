@@ -47,5 +47,6 @@ void hexdump(unsigned char *data, unsigned int amount);
 
 int check_ascii_pointer(uint32_t pointer);
 int check_ascii_string(const char* string, size_t length);
+void print_progress(double progress, void* data);
 
 #endif /* COMMON_H */
