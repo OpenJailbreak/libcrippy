@@ -118,3 +118,28 @@ void hexdump (unsigned char* data, unsigned int amount) {
 
     return;
 }
+
+void print_progress(double progress, void* data) {
+	int i = 0;
+	if(progress < 0) {
+		return;
+	}
+
+	if(progress > 100) {
+		progress = 100;
+	}
+
+	printf("\r[");
+	for(i = 0; i < 50; i++) {
+		if(i < progress / 2) {
+			printf("=");
+		} else {
+			printf(" ");
+		}
+	}
+
+	printf("] %3.1f%%", progress);
+	if(progress == 100) {
+		printf("\n");
+	}
+}
