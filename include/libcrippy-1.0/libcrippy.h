@@ -44,23 +44,22 @@
 #define BUFLARGE    0x4000
 
 
-enum plist_format_t {
+typedef enum  {
 	PLIST_FORMAT_XML,
 	PLIST_FORMAT_BINARY
-};
+} plist_format_t;
 
 
 char* prot2str(uint32_t prot);
-void hexdump(unsigned char *data, unsigned int amount);
+void hexdump(unsigned char* data, unsigned int amount);
 int check_ascii_pointer(uint32_t pointer);
 int check_ascii_string(const char* string, size_t length);
 void print_progress(double progress, void* data);
-static char *str_toupper(char* str);
-static char* format_size_for_display(uint64_t size);
-static void buffer_read_from_filename(const char *filename, char **buffer, uint64_t *length);
-static void buffer_write_to_filename(const char *filename, const char *buffer, uint64_t length);
-static int plist_read_from_filename(plist_t *plist, const char *filename);
-static int plist_write_to_filename(plist_t plist, const char *filename, enum plist_format_t format);
-static void print_progress_real(double progress, int flush);
+char* str_toupper(char* str);
+char* format_size_for_display(uint64_t size);
+
+int plist_read(const char* path, plist_t* plist);
+int plist_write(const char* path, plist_t plist, plist_format_t format);
+void print_progress_real(double progress, int flush);
 
 #endif /* COMMON_H */

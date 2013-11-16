@@ -176,92 +176,63 @@ char* format_size_for_display(uint64_t size)
 }
 
 
-void buffer_read_from_filename(const char *filename, char **buffer, uint64_t *length)
-{
-	FILE *f;
-	uint64_t size;
-
-	*length = 0;
-
-	f = fopen(filename, "rb");
-	if (!f) {
-		return;
+int plist_read(const char* path, plist_t* plist) {
+	int x = 0;
+	unsigned int length = 0;
+	unsigned char* buffer = NULL;
+    
+	if (!path) {
+		return -1;
 	}
-
-	fseek(f, 0, SEEK_END);
-	size = ftell(f);
-	rewind(f);
-
-	if (size == 0) {
-		return;
+    
+	x = file_read(path, &buffer, &length);
+	if (x < 0 || buffer == NULL || length <= 0) {
+		return -1;
 	}
-
-	*buffer = (char*)malloc(sizeof(char)*size);
-	fread(*buffer, sizeof(char), size, f);
-	fclose(f);
-
-	*length = size;
-}
-
-void buffer_write_to_filename(const char *filename, const char *buffer, uint64_t length)
-{
-	FILE *f;
-
-	f = fopen(filename, "ab");
-	if (!f)
-		f = fopen(filename, "wb");
-	if (f) {
-		fwrite(buffer, sizeof(char), length, f);
-		fclose(f);
-	}
-}
-
-
-int plist_read_from_filename(plist_t *plist, const char *filename)
-{
-	char *buffer = NULL;
-	uint64_t length;
-
-	if (!filename)
-		return 0;
-
-	buffer_read_from_filename(filename, &buffer, &length);
-
-	if (!buffer) {
-		return 0;
-	}
-
+    
 	if ((length > 8) && (memcmp(buffer, "bplist00", 8) == 0)) {
 		plist_from_bin(buffer, length, plist);
 	} else {
 		plist_from_xml(buffer, length, plist);
 	}
-
-	free(buffer);
-
-	return 1;
+    
+	if (buffer) {
+		free(buffer);
+		buffer = NULL;
+	}
+    
+	return 0;
 }
 
-int plist_write_to_filename(plist_t plist, const char *filename, enum plist_format_t format)
-{
-	char *buffer = NULL;
-	uint32_t length;
-
-	if (!plist || !filename)
-		return 0;
-
-	if (format == PLIST_FORMAT_XML)
+int plist_write(const char* path, plist_t plist, plist_format_t format) {
+	int x = 0;
+	unsigned int length = 0;
+	unsigned char* buffer = NULL;
+    
+	if (!plist || !path) {
+		return -1;
+	}
+    
+	if (format == PLIST_FORMAT_XML) {
 		plist_to_xml(plist, &buffer, &length);
-	else if (format == PLIST_FORMAT_BINARY)
+	} else if (format == PLIST_FORMAT_BINARY) {
 		plist_to_bin(plist, &buffer, &length);
-	else
-		return 0;
-
-	buffer_write_to_filename(filename, buffer, length);
-
-	free(buffer);
-
-	return 1;
+	} else {
+		return -1;
+	}
+    
+	x = file_write(path, &buffer, &length);
+	if (x < 0) {
+		free(buffer);
+		return -1;
+	}
+    
+	if (buffer) {
+		free(buffer);
+		buffer = NULL;
+	}
+    
+	return 0;
 }
 
 
