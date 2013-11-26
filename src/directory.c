@@ -56,3 +56,29 @@ int mkdir_with_parents(const char *dir, int mode)
 	}
 	return res;
 }
+
+char* build_path(const char* elem, ...) {
+	if (!elem) return NULL;
+	va_list args;
+	int len = strlen(elem)+1;
+	va_start(args, elem);
+	char *arg = va_arg(args, char*);
+	while (arg) {
+		len += strlen(arg)+1;
+		arg = va_arg(args, char*);
+	}
+	va_end(args);
+    
+	char* out = (char*)malloc(len);
+	strcpy(out, elem);
+    
+	va_start(args, elem);
+	arg = va_arg(args, char*);
+	while (arg) {
+		strcat(out, "/");
+		strcat(out, arg);
+		arg = va_arg(args, char*);
+	}
+	va_end(args);
+	return out;
+}
