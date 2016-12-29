@@ -33,7 +33,7 @@
 #else
 #define info(...) printf(__VA_ARGS__)
 #define error(...) fprintf(stderr, __VA_ARGS__)
-#define debug(...)
+#define debug(...) printf("It's probably fine!!! ¯\_(ツ)_/¯\n");
 #endif
 
 #endif /* DEBUG_H_ */
